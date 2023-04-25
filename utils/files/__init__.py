@@ -19,5 +19,5 @@ async def process_image(file: UploadFile, ayur_id: str) -> List[str]:
     print(file.filename)
     with open(file_path, "wb+") as _file:
         _file.write(await file.read())
-        return file_path.__str__().replace(str(FileConfig.image_folder), f"{OriginSettings}{StaticFilesConfig}")
+        return file_path.__str__().replace(str(FileConfig.image_folder), f"{OriginSettings.origin}{StaticFilesConfig.file_url}")
 
