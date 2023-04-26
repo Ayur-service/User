@@ -1,3 +1,5 @@
+import json
+
 from pydantic import BaseModel, validator, Field, EmailStr
 from typing import List, Optional
 from enum import Enum
@@ -73,12 +75,13 @@ class UserDetails(BasicDetails):
             raise ValueError("Invalid phone number")
 
 
-class UpdateDetails(BaseDetails):
-    phone_number: str
-    weight: int
-    height: int
-    emergency_contact_number: List[str]
-    allergies: List[str]
+class UpdateDetails(BaseModel):
+    email_id: str | None
+    phone_number: str | None
+    weight: int | None  # weight in kg
+    height: int | None  # height in cm
+    emergency_contact_number: List[str] | None
+    allergies: List[str] | None
 
     @validator("phone_number")
     def validate_phone_number(cls, phone_number):
@@ -92,6 +95,7 @@ class UpdateDetails(BaseDetails):
 
 
 if __name__ == "__main__":
-    a = BaseDetails(phone_number=PhoneNumber(number=8007611826), email_id="cosmicoppai@protonmail.com")
-    b = a.json()
-    print(a.dict())
+    t ='{"email_id": "cosmicoppai@protonmail.com","phone_number": "+918007611826","weight": 69,"height": 180,"emergency_contact_number": ["+918828087038"],"allergies": ["love"]}'
+    data = json.loads(t)
+    print(data)
+    print(UpdateDetails(**data))

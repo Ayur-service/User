@@ -34,9 +34,9 @@ def get_user(ayur_id: str):
 
 
 @user_router.put("/{ayur_id}", status_code=status.HTTP_204_NO_CONTENT)
-def update_user(ayur_id: str, user_data: UpdateDetails) -> None:
+def update_user(ayur_id: str, user_data: UpdateDetails, token_data: UserToken = Depends(validate_token)) -> None:
     session = DataBase().session
-    session.query(UsersData).update(UsersData.ayur_id == ayur_id).update(user_data.dict())
+    session.query(UsersData).filter(UsersData.ayur_id == token_data.sub).update(user_data.dict())
     session.commit()
 
 
