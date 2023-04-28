@@ -6,7 +6,7 @@ from functools import lru_cache
 from utils.database import DataBase
 
 app = FastAPI(
-    title='Checkup Service',
+    title='User Service',
     description='mere samne wali khidki pe',
     version='0.1',
     contact={

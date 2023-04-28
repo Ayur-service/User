@@ -4,6 +4,4 @@ Dockerfile
 *.yaml
 test.py
 .idea
-auth
-auth.pub
-checkups
+Readme.txt
