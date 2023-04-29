@@ -35,8 +35,12 @@ def get_user(ayur_id: str):
 
 @user_router.put("/{ayur_id}", status_code=status.HTTP_204_NO_CONTENT)
 def update_user(ayur_id: str, user_data: UpdateDetails, token_data: UserToken = Depends(validate_token)) -> None:
+    user_data = user_data.dict(exclude_none=True)
+    if not user_data:
+        raise exceptions.HTTP_400("One or more field should be present")
+
     session = DataBase().session
-    session.query(UsersData).filter(UsersData.ayur_id == token_data.sub).update(user_data.dict())
+    session.query(UsersData).filter(UsersData.ayur_id == token_data.sub).update(user_data)
     session.commit()
 
 
@@ -49,7 +53,7 @@ async def create_user_data(user_data: BasicDetails = Depends(),
 
     session = DataBase().session
     if session.query(UsersData).filter(UsersData.ayur_id == token_data.sub).first():
-        raise exceptions.HTTP_400()
+        raise exceptions.HTTP_409()
     dob = user_data.dob
     session.add(UsersData(ayur_id=token_data.sub,
                           name=user_data.name, emergency_contact=user_data.emergency_contact_number,
